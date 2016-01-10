@@ -1,10 +1,10 @@
 SRC=src/ci.md
-DST=ci.html
+DST=index.html
 
 all: $(DST)
 
-%.html: src/%.md
-	./build.sh src/$*.md $@
+index.html: src/ci.md
+	./build.sh src/ci.md $@
 
 continuous:
 	while :; do inotifywait -e modify $(SRC); make $(DST); done

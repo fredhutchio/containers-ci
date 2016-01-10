@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="author" content="Frederick Erick Matsen" />
-  <title>Continuous integration</title>
+  <title>Containers for continuous integration (in science)</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -30,28 +30,18 @@
     <div class="slides">
 
 <section>
-    <h1 class="title">Continuous integration</h1>
+    <h1 class="title">Containers for continuous integration <br>(in science)</h1>
     <h2 class="author">Frederick “Erick” Matsen</h2>
     <h3 class="date"><a href="http://matsen.fredhutch.org/">http://matsen.fredhutch.org/</a> <br> <a href="https://twitter.com/ematsen">@ematsen</a></h3>
 </section>
 
 <section class="slide level2">
 
-<!-- I'm a computational biology PI at the Fred Hutch.
-
-http://travis-ci.org/rails/rails/
-http://doc.sagemath.org/html/en/reference/calculus/sage/symbolic/expression.html
-https://docs.docker.com/reference/builder/
-http://yaml.org/
-http://yamllint.com/
--->
-
-
 <section data-background="figures/octocat.svg"> </section>
 
 </section>
 <section id="welcome-to-the-future" class="slide level2">
-<h1>Welcome to the future</h1>
+<h1>Welcome to <br> the future</h1>
 <ul style="list-style-type: none;">
 <li> 
 <span style="color:green">✔</span> Code under version control
@@ -67,9 +57,9 @@ http://yamllint.com/
 
 
 </section>
-<section id="what-about-the-pros" class="slide level2">
-<h1>What about the pros?</h1>
-<p>Check out <a href="https://github.com/rails/rails/pulls">pull requests for Rails</a><br>and click on the little <span style="color:green">✔</span>s and <span style="color:red">✗</span>s</p>
+<section id="what-do-the-pros-do" class="slide level2">
+<h1>What do the <br> pros do?</h1>
+<p>Check out <a href="https://github.com/rails/rails/pulls">pull requests for Rails</a><br>and click on the little <span style="color:green">✔</span>s and <span style="color:red">✗</span>s.</p>
 <p> </p>
 <div class="fragment">
 Uh oh, one of <a href="https://travis-ci.org/matsen/p-neq-np/builds/87144991">my builds is failing</a>.
@@ -91,31 +81,44 @@ No <code>cowsay</code>????
 </section>
 <section id="section-2" class="slide level2">
 <h1></h1>
-<figure>
-<img src="https://www.docker.com/sites/default/files/what-is-docker-diagram.png" />
-</figure>
+<p><img src="https://www.docker.com/sites/default/files/what-is-docker-diagram.png" height=600 /></p>
 </section>
 <section id="section-3" class="slide level2">
 <h1></h1>
-<figure>
-<img src="https://www.docker.com/sites/default/files/what-is-vm-diagram.png" />
-</figure>
+<p><img src="https://www.docker.com/sites/default/files/what-is-vm-diagram.png" /></p>
+</section>
+<section id="scientific-workflows-are-complex" class="slide level2">
+<h1>Scientific workflows are complex</h1>
+<p> </p>
+<p>Docker enables us to bring together lots of working parts, unusual languages, and heavy dependencies.</p>
 </section>
 <section id="section-4" class="slide level2">
 <h1></h1>
-<p>Dockerfile:</p>
+<p>Dockerfile (<a href="https://docs.docker.com/engine/reference/builder/">docs</a>:</p>
 <pre><code>from ubuntu:trusty
+
 RUN apt-get update -q &amp;&amp; \
     apt-get install -y -q --no-install-recommends \
         cowsay \
         make
+
 RUN ln -s /usr/games/cowsay /usr/bin</code></pre>
+<div class="fragment">
 <p>On command line:</p>
 <pre><code>git clone https://github.com/matsen/cowsay-build-env.git
 cd cowsay-build-env/
 docker build -t &lt;USERNAME&gt;/cowsay-build-env .
 docker run -it &lt;USERNAME&gt;/cowsay-build-env /bin/bash
 cowsay</code></pre>
+</div>
+</section>
+<section id="exercise" class="slide level2">
+<h1>Exercise</h1>
+<ul>
+<li>add <code>nyancat</code> to your Dockerfile</li>
+<li>build</li>
+<li>run it from within your container</li>
+</ul>
 </section>
 <section id="docker-hub" class="slide level2">
 <h1><a href="https://hub.docker.com/">Docker hub</a></h1>
@@ -125,8 +128,8 @@ cowsay</code></pre>
 <p>Or set up an <a href="https://docs.docker.com/docker-hub/builds/">automated build</a> as I have for this project:</p>
 <p>https://hub.docker.com/r/matsen/cowsay-build-env/</p>
 </section>
-<section id="one-could-stop-here" class="slide level2">
-<h1>One could stop here!</h1>
+<section id="we-could-stop-here" class="slide level2">
+<h1>We could stop here!</h1>
 <p>In fact, I wrote <a href="https://github.com/matsengrp/relay">a little shim</a> that would post to our Slack channel with the results of an automated build.</p>
 <p>But, there are tools that make the process smoother and more logical, such as <a href="http://wercker.com">Wercker</a>.</p>
 </section>
@@ -138,9 +141,9 @@ cowsay</code></pre>
 </section>
 <section id="wercker.yml" class="slide level2">
 <h1>wercker.yml</h1>
-<p>Here’s the Docker image used for the build:</p>
+<p>Specify the Docker image used for the build:</p>
 <pre><code>box: matsen/cowsay-build-env</code></pre>
-<p>Here’s what the build should do:</p>
+<p>Specify what the build should do:</p>
 <pre><code>build:
     steps:
         - script:
@@ -148,21 +151,37 @@ cowsay</code></pre>
             code: make</code></pre>
 <p>When pushed to Wercker, you get a build page like <a href="https://app.wercker.com/#applications/562ac0e50ee6b2c40f0936b4">this</a>.</p>
 </section>
-<section id="more-fun-from-pplacer" class="slide level2">
-<h1>More fun (from <a href="https://github.com/matsen/pplacer/blob/master/wercker.yml">pplacer</a>)</h1>
+<section id="more-fun" class="slide level2">
+<h1>More <a href="https://github.com/matsen/pplacer/blob/master/wercker.yml">fun</a></h1>
+<p>Notify:</p>
 <pre><code>build:
     after-steps:
         - slack-notifier:
             url: $SLACK_URL
             channel: microbiome
-            username: pplacer build
-
-deploy:
+            username: pplacer build</code></pre>
+<p>Upload docs to Github pages:</p>
+<pre><code>deploy:
     steps:
         - ematsen/gh-pages:
             token: $GITHUB_TOKEN
             repo: matsen/pplacer
             path: docs/_build/html</code></pre>
+</section>
+<section id="yaml-is-great" class="slide level2">
+<h1><a href="http://yaml.org/">YAML</a> is great*</h1>
+<p> </p>
+<p> </p>
+<p> </p>
+<p>* and a little fussy to debug. Use <a href="http://www.yamllint.com/">yamllint.com</a>.</p>
+</section>
+<section id="related-things" class="slide level2">
+<h1>Related things</h1>
+<ul>
+<li><a href="https://www.rabix.org/">Rabix</a>: portable workflows via Docker</li>
+<li><a href="http://bioboxes.org/">Bioboxes</a>: modularize bioinformatics tools via Docker</li>
+<li><a href="https://app.shippable.com/">Shippable</a>: another CI solution with Docker</li>
+</ul>
 </section>
 <section id="thank-you" class="slide level2">
 <h1>Thank you!</h1>
