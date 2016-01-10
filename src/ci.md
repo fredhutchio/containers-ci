@@ -49,34 +49,40 @@ No `cowsay`????
 
 Docker enables us to bring together lots of working parts, unusual languages, and heavy dependencies.
 
-##
-Dockerfile ([docs](https://docs.docker.com/engine/reference/builder/)):
+## [Dockerfile](https://docs.docker.com/engine/reference/builder/)
 
-    from ubuntu:trusty
+    FROM ubuntu:trusty
 
     RUN apt-get update -q && \
         apt-get install -y -q --no-install-recommends \
+            ca-certificates \
             cowsay \
+            git \
             make
 
     RUN ln -s /usr/games/cowsay /usr/bin
 
-<div class="fragment">
-On command line:
+    CMD git clone https://github.com/matsen/p-neq-np.git && \
+        cd p-neq-np && \
+        make
+
+## Try this
 
     git clone https://github.com/matsen/cowsay-build-env.git
     cd cowsay-build-env/
     docker build -t <USERNAME>/cowsay-build-env .
+    docker images
+    docker run -t <USERNAME>/cowsay-build-env
     docker run -it <USERNAME>/cowsay-build-env /bin/bash
-    cowsay
+
+<div class="fragment">
+Exercise:
+
+* Exit from your container
+* Install `nyancat` with `apt-get` in your Dockerfile
+* Build your container (same command as before)
+* Run it from within your container (same as before)
 </div>
-
-
-## Exercise
-* add `nyancat` to your Dockerfile
-* build
-* run it from within your container
-
 
 ## [Docker hub](https://hub.docker.com/)
 Either push directly:
@@ -104,6 +110,8 @@ But, there are tools that make the process smoother and more logical, such as [W
 Specify the Docker image used for the build:
 
     box: matsen/cowsay-build-env
+
+&nbsp;
 
 Specify what the build should do:
 

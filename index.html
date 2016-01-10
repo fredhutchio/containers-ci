@@ -92,33 +92,40 @@ No <code>cowsay</code>????
 <p> </p>
 <p>Docker enables us to bring together lots of working parts, unusual languages, and heavy dependencies.</p>
 </section>
-<section id="section-4" class="slide level2">
-<h1></h1>
-<p>Dockerfile (<a href="https://docs.docker.com/engine/reference/builder/">docs</a>):</p>
-<pre><code>from ubuntu:trusty
+<section id="dockerfile" class="slide level2">
+<h1><a href="https://docs.docker.com/engine/reference/builder/">Dockerfile</a></h1>
+<pre><code>FROM ubuntu:trusty
 
 RUN apt-get update -q &amp;&amp; \
     apt-get install -y -q --no-install-recommends \
+        ca-certificates \
         cowsay \
+        git \
         make
 
-RUN ln -s /usr/games/cowsay /usr/bin</code></pre>
-<div class="fragment">
-<p>On command line:</p>
+RUN ln -s /usr/games/cowsay /usr/bin
+
+CMD git clone https://github.com/matsen/p-neq-np.git &amp;&amp; \
+    cd p-neq-np &amp;&amp; \
+    make</code></pre>
+</section>
+<section id="try-this" class="slide level2">
+<h1>Try this</h1>
 <pre><code>git clone https://github.com/matsen/cowsay-build-env.git
 cd cowsay-build-env/
 docker build -t &lt;USERNAME&gt;/cowsay-build-env .
-docker run -it &lt;USERNAME&gt;/cowsay-build-env /bin/bash
-cowsay</code></pre>
-</div>
-</section>
-<section id="exercise" class="slide level2">
-<h1>Exercise</h1>
+docker images
+docker run -t &lt;USERNAME&gt;/cowsay-build-env
+docker run -it &lt;USERNAME&gt;/cowsay-build-env /bin/bash</code></pre>
+<div class="fragment">
+<p>Exercise:</p>
 <ul>
-<li>add <code>nyancat</code> to your Dockerfile</li>
-<li>build</li>
-<li>run it from within your container</li>
+<li>Exit from your container</li>
+<li>Install <code>nyancat</code> with <code>apt-get</code> in your Dockerfile</li>
+<li>Build your container (same command as before)</li>
+<li>Run it from within your container (same as before)</li>
 </ul>
+</div>
 </section>
 <section id="docker-hub" class="slide level2">
 <h1><a href="https://hub.docker.com/">Docker hub</a></h1>
@@ -133,7 +140,7 @@ cowsay</code></pre>
 <p>In fact, I wrote <a href="https://github.com/matsengrp/relay">a little shim</a> that would post to our Slack channel with the results of an automated build.</p>
 <p>But, there are tools that make the process smoother and more logical, such as <a href="http://wercker.com">Wercker</a>.</p>
 </section>
-<section id="section-5" class="slide level2">
+<section id="section-4" class="slide level2">
 <h1></h1>
 <section data-background="http://blog.wercker.com/images/posts/2015-08-13-Introducing-our-newest-teammember/walter_bay.png"> </section>
 
@@ -143,6 +150,7 @@ cowsay</code></pre>
 <h1>wercker.yml</h1>
 <p>Specify the Docker image used for the build:</p>
 <pre><code>box: matsen/cowsay-build-env</code></pre>
+<p> </p>
 <p>Specify what the build should do:</p>
 <pre><code>build:
     steps:
