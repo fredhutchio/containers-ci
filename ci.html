@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Frederick Erick Matsen" />
+  <title>Continuous integration</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css"/>
+    <style type="text/css">code{white-space: pre;}</style>
+    <link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+    <!--[if lt IE 9]>
+    <script src="reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Continuous integration</h1>
+    <h2 class="author">Frederick “Erick” Matsen</h2>
+    <h3 class="date"><a href="http://matsen.fredhutch.org/">http://matsen.fredhutch.org/</a> <br> <a href="https://twitter.com/ematsen">@ematsen</a></h3>
+</section>
+
+<section class="slide level2">
+
+<!-- I'm a computational biology PI at the Fred Hutch.
+
+http://travis-ci.org/rails/rails/
+http://doc.sagemath.org/html/en/reference/calculus/sage/symbolic/expression.html
+https://docs.docker.com/reference/builder/
+http://yaml.org/
+http://yamllint.com/
+-->
+
+
+<section data-background="figures/octocat.svg"> </section>
+
+</section>
+<section id="welcome-to-the-future" class="slide level2">
+<h1>Welcome to the future</h1>
+<ul style="list-style-type: none;">
+<li> 
+<span style="color:green">✔</span> Code under version control
+<li class="fragment"> 
+<span style="color:green">✔</span> Example inputs included in repository
+<li class="fragment"> 
+<span style="color:red">✗</span> Code compiles
+<li class="fragment"> 
+<span style="color:red">✗</span> Code runs on example inputs
+<li class="fragment"> 
+<span style="color:red">✗</span> Code does the right thing on example inputs
+</ul>
+
+
+</section>
+<section id="what-about-the-pros" class="slide level2">
+<h1>What about the pros?</h1>
+<p>Check out <a href="https://github.com/rails/rails/pulls">pull requests for Rails</a><br>and click on the little <span style="color:green">✔</span>s and <span style="color:red">✗</span>s</p>
+<p> </p>
+<div class="fragment">
+Uh oh, one of <a href="https://travis-ci.org/matsen/p-neq-np/builds/87144991">my builds is failing</a>.
+</div>
+<div class="fragment">
+No <code>cowsay</code>????
+</div>
+</section>
+<section id="section" class="slide level2">
+<h1> </h1>
+<section data-background="figures/hopeless.jpg"> </section>
+
+
+</section>
+<section id="section-1" class="slide level2">
+<h1></h1>
+<section data-background="figures/docker.svg"> </section>
+
+</section>
+<section id="section-2" class="slide level2">
+<h1></h1>
+<figure>
+<img src="https://www.docker.com/sites/default/files/what-is-docker-diagram.png" />
+</figure>
+</section>
+<section id="section-3" class="slide level2">
+<h1></h1>
+<figure>
+<img src="https://www.docker.com/sites/default/files/what-is-vm-diagram.png" />
+</figure>
+</section>
+<section id="section-4" class="slide level2">
+<h1></h1>
+<p>Dockerfile:</p>
+<pre><code>from ubuntu:trusty
+RUN apt-get update -q &amp;&amp; \
+    apt-get install -y -q --no-install-recommends \
+        cowsay \
+        make
+RUN ln -s /usr/games/cowsay /usr/bin</code></pre>
+<p>On command line:</p>
+<pre><code>git clone https://github.com/matsen/cowsay-build-env.git
+cd cowsay-build-env/
+docker build -t &lt;USERNAME&gt;/cowsay-build-env .
+docker run -it &lt;USERNAME&gt;/cowsay-build-env /bin/bash
+cowsay</code></pre>
+</section>
+<section id="docker-hub" class="slide level2">
+<h1><a href="https://hub.docker.com/">Docker hub</a></h1>
+<p>Either push directly:</p>
+<pre><code>docker push &lt;USERNAME&gt;/cowsay-build-env</code></pre>
+<p> </p>
+<p>Or set up an <a href="https://docs.docker.com/docker-hub/builds/">automated build</a> as I have for this project:</p>
+<p>https://hub.docker.com/r/matsen/cowsay-build-env/</p>
+</section>
+<section id="one-could-stop-here" class="slide level2">
+<h1>One could stop here!</h1>
+<p>In fact, I wrote <a href="https://github.com/matsengrp/relay">a little shim</a> that would post to our Slack channel with the results of an automated build.</p>
+<p>But, there are tools that make the process smoother and more logical, such as <a href="http://wercker.com">Wercker</a>.</p>
+</section>
+<section id="section-5" class="slide level2">
+<h1></h1>
+<section data-background="http://blog.wercker.com/images/posts/2015-08-13-Introducing-our-newest-teammember/walter_bay.png"> </section>
+
+
+</section>
+<section id="wercker.yml" class="slide level2">
+<h1>wercker.yml</h1>
+<p>Here’s the Docker image used for the build:</p>
+<pre><code>box: matsen/cowsay-build-env</code></pre>
+<p>Here’s what the build should do:</p>
+<pre><code>build:
+    steps:
+        - script:
+            name: build
+            code: make</code></pre>
+<p>When pushed to Wercker, you get a build page like <a href="https://app.wercker.com/#applications/562ac0e50ee6b2c40f0936b4">this</a>.</p>
+</section>
+<section id="more-fun-from-pplacer" class="slide level2">
+<h1>More fun (from <a href="https://github.com/matsen/pplacer/blob/master/wercker.yml">pplacer</a>)</h1>
+<pre><code>build:
+    after-steps:
+        - slack-notifier:
+            url: $SLACK_URL
+            channel: microbiome
+            username: pplacer build
+
+deploy:
+    steps:
+        - ematsen/gh-pages:
+            token: $GITHUB_TOKEN
+            repo: matsen/pplacer
+            path: docs/_build/html</code></pre>
+</section>
+<section id="thank-you" class="slide level2">
+<h1>Thank you!</h1>
+</section>
+    </div>
+  </div>
+
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+//          { src: 'reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; }, }
+//          { src: 'reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+]});
+    </script>
+    </body>
+</html>
