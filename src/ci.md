@@ -50,7 +50,7 @@ No `cowsay`????
 Docker enables us to bring together lots of working parts, unusual languages, and heavy dependencies.
 
 ##
-Dockerfile ([docs](https://docs.docker.com/engine/reference/builder/):
+Dockerfile ([docs](https://docs.docker.com/engine/reference/builder/)):
 
     from ubuntu:trusty
 
@@ -87,7 +87,7 @@ Either push directly:
 
 Or set up an [automated build](https://docs.docker.com/docker-hub/builds/) as I have for this project:
 
-https://hub.docker.com/r/matsen/cowsay-build-env/
+<https://hub.docker.com/r/matsen/cowsay-build-env/>
 
 
 ## We could stop here!
