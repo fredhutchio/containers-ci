@@ -70,10 +70,10 @@ Docker enables us to bring together lots of working parts, unusual languages, an
 
     git clone https://github.com/matsen/cowsay-build-env.git
     cd cowsay-build-env/
-    docker build -t <USERNAME>/cowsay-build-env .
+    docker build -t $USER/cowsay-build-env .
     docker images
-    docker run -t <USERNAME>/cowsay-build-env
-    docker run -it <USERNAME>/cowsay-build-env /bin/bash
+    docker run -t $USER/cowsay-build-env
+    docker run -it $USER/cowsay-build-env /bin/bash
 
 <div class="fragment">
 Exercise:
@@ -87,7 +87,7 @@ Exercise:
 ## [Docker hub](https://hub.docker.com/)
 Either push directly:
 
-    docker push <USERNAME>/cowsay-build-env
+    docker push $USER/cowsay-build-env
 
 &nbsp;
 

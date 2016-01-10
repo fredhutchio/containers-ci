@@ -113,10 +113,10 @@ CMD git clone https://github.com/matsen/p-neq-np.git &amp;&amp; \
 <h1>Try this</h1>
 <pre><code>git clone https://github.com/matsen/cowsay-build-env.git
 cd cowsay-build-env/
-docker build -t &lt;USERNAME&gt;/cowsay-build-env .
+docker build -t $USER/cowsay-build-env .
 docker images
-docker run -t &lt;USERNAME&gt;/cowsay-build-env
-docker run -it &lt;USERNAME&gt;/cowsay-build-env /bin/bash</code></pre>
+docker run -t $USER/cowsay-build-env
+docker run -it $USER/cowsay-build-env /bin/bash</code></pre>
 <div class="fragment">
 <p>Exercise:</p>
 <ul>
@@ -130,7 +130,7 @@ docker run -it &lt;USERNAME&gt;/cowsay-build-env /bin/bash</code></pre>
 <section id="docker-hub" class="slide level2">
 <h1><a href="https://hub.docker.com/">Docker hub</a></h1>
 <p>Either push directly:</p>
-<pre><code>docker push &lt;USERNAME&gt;/cowsay-build-env</code></pre>
+<pre><code>docker push $USER/cowsay-build-env</code></pre>
 <p> </p>
 <p>Or set up an <a href="https://docs.docker.com/docker-hub/builds/">automated build</a> as I have for this project:</p>
 <p><a href="https://hub.docker.com/r/matsen/cowsay-build-env/">https://hub.docker.com/r/matsen/cowsay-build-env/</a></p>
