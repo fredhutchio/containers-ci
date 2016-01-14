@@ -162,4 +162,5 @@ Use [yamllint.com](http://www.yamllint.com/).
 * [Bioboxes](http://bioboxes.org/): modularize bioinformatics tools via Docker
 * [Shippable](https://app.shippable.com/): another CI solution with Docker
 
-## Thank you!
+##
+<section data-background="figures/chicobonbon.jpg"> </section>
